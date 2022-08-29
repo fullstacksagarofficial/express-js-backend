@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../layout/links') %>
+</head>
+
+<body>
+  <script>
+    function areYouSureEdit(id) {
+      // alert(id)
+      Swal.fire({
+        title: "Are you sure want to delete this record?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ACC646",
+        cancelButtonColor: "#CBCEC9",
+        confirmButtonText: "CONFIRM",
+        cancelButtonText: "CANCEL",
+        toast: true,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          window.location = id;
+        } else if (result.isDenied) {
+          return;
+        }
+      });
+    }
+  </script>
+
+
+  <div class="container-fluid position-relative d-flex p-0">
+    <!-- Sidebar Start -->
+    <%- include('../layout/sidebar') %>
+      <!-- Sidebar End -->
+      <!-- Content Start -->
+      <div class="content">
+        <!-- Navbar Start -->
+        <%- include('../layout/nav') %>
+          <!-- Navbar End -->
+          <div class="container-fluid py-5 px-4">
+            <div class="d-flex justify-content-end mb-3">
+              <a href="/category/addcategory"><button class="themeBtn"> <i class="fa-solid fa-plus"></i> Add
+                  category</button></a>
+            </div>
+
+            <table class="table align-middle dt-responsive nowrap py-3" style="width: 100%" id="categorytable">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">category</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% category.forEach((row,index)=> { %>
+
+                  <tr>
+                    <th scope="row">
+                      <%= index+1 %>
+                    </th>
+                    <td>
+                      <%= row.category %>
+                    </td>
+                    <td>
+                      <% if(row.status==1){ %>
+                        <a href="/category/inactive/<%= row._id  %>" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                          title="Click to In-active"><span class="badge bg-success">Active</span></a>
+                        <% } else{ %>
+                          <a href="/category/active/<%= row._id  %>" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            title="Click to Active"><span class="badge bg-danger">InActive</span></a>
+                          <% } %>
+                    </td>
+                    <td>
+                      <a href="/editcategory/<%= row._id %> ">
+                        <i class="fa-regular fa-pen-to-square mx-2 text-success"></i></a>
+                      <a onclick="areYouSureEdit('/delete/<%= row._id %> ')">
+                        <i class="fa-regular fa-trash-can mx-2 text-danger"></i></a>
+                    </td>
+                  </tr>
+                  <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <%- include('../layout/footer') %>
+
+      </div>
+      <%- include('../layout/scripts') %>
+        <script>
+          $(document).ready(function () {
+            $("#categorytable").DataTable();
+          });
+        </script>
+        <script>
+          function image(image) {
+            var url = image;
+            window.open(url, 'Documents', ['menubar=yes,scrollbars=yes,controlbox=yes', 'top=10,left=150,width=1050,height=650']);
+            return;
+          }
+        </script>
+</body>
+
+</html>

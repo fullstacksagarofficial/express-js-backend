@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../layout/links') %>
+</head>
+
+<body>
+  <script>
+    function areYouSureEdit(id) {
+      // alert(id)
+      Swal.fire({
+        title: "Are you sure want to delete this record?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ACC646",
+        cancelButtonColor: "#CBCEC9",
+        confirmButtonText: "CONFIRM",
+        cancelButtonText: "CANCEL",
+        toast: true,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          window.location = id;
+        } else if (result.isDenied) {
+          return;
+        }
+      });
+    }
+  </script>
+
+
+  <div class="container-fluid position-relative d-flex p-0">
+    <!-- Sidebar Start -->
+    <%- include('../layout/sidebar') %>
+      <!-- Sidebar End -->
+      <!-- Content Start -->
+      <div class="content">
+        <!-- Navbar Start -->
+        <%- include('../layout/nav') %>
+          <!-- Navbar End -->
+          <div class="container-fluid py-5 px-4">
+            <div class="row g-4">
+              <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+                  <h6 class="mb-4">Admin Setting</h6>
+                  <form method="post" action="/update_admin">
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Name</label>
+                      <input type="name" class="form-control" value="<%= admins?admins.name:""  %>" id="name"
+                        name="name">
+                    </div>
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" readonly class="form-control" value="<%= admins?admins.email:""  %>"
+                        id="email">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+                  <h6 class="mb-4">Change Password</h6>
+                  <form method="post" action="/reset_password" id="reset_password">
+                    <div class="mb-3 position-relative w-100">
+                      <label for="password" class="form-label">Old Password</label>
+                      <input type="password" class="form-control" required placeholder="Old Password" id="old_password"
+                        name="old_password">
+                      <button type="button" id="btnToggle" class="toggle"><i id="eyeIcon"
+                          class="fa fa-eye"></i></button>
+                    </div>
+                    <div class="mb-3 position-relative w-100">
+                      <label for="new_password" class="form-label">New Password</label>
+                      <input type="password" class="form-control" required placeholder="New Password" id="new_password"
+                        name="new_password">
+                      <button type="button" id="btnToggle1" class="toggle"><i id="eyeIcon1"
+                          class="fa fa-eye"></i></button>
+                    </div>
+                    <div class="mb-3 position-relative w-100">
+                      <label for="confirm_password" class="form-label">Confirm Password</label>
+                      <input type="password" class="form-control" required placeholder="Confirm Password"
+                        id="confirm_password" name="confirm_password">
+                      <button type="button" id="btnToggle2" class="toggle"><i id="eyeIcon2"
+                          class="fa fa-eye"></i></button>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <%- include('../layout/footer') %>
+
+      </div>
+      <%- include('../layout/scripts') %>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.js"></script>
+        <script>
+
+          $("#reset_password").validate({
+            rules: {
+              new_password: {
+                minlength: 5
+              },
+              confirm_password: {
+                minlength: 5,
+                equalTo: "#new_password"
+              }
+            },
+            messages: {
+              confirm_password: {
+                equalTo: "Confirm password not match with new password !",
+              }
+            }
+          });
+        </script>
+        <script>
+          let passwordInput = document.getElementById('old_password');
+          let passwordInput1 = document.getElementById('new_password');
+          let passwordInput2 = document.getElementById('confirm_password');
+          toggle = document.getElementById('btnToggle'),
+            toggle1 = document.getElementById('btnToggle1'),
+            toggle2 = document.getElementById('btnToggle2'),
+            icon = document.getElementById('eyeIcon');
+          icon1 = document.getElementById('eyeIcon1');
+          icon2 = document.getElementById('eyeIcon2');
+
+          function togglePassword() {
+            if (passwordInput.type === 'password') {
+              passwordInput.type = 'text';
+              icon.classList.add("fa-eye-slash");
+            } else {
+              passwordInput.type = 'password';
+              icon.classList.remove("fa-eye-slash");
+            }
+          }
+          toggle.addEventListener('click', togglePassword, false);
+
+          function togglePassword1() {
+            if (passwordInput1.type === 'password') {
+              passwordInput1.type = 'text';
+              icon1.classList.add("fa-eye-slash");
+            } else {
+              passwordInput1.type = 'password';
+              icon1.classList.remove("fa-eye-slash");
+            }
+          }
+          toggle1.addEventListener('click', togglePassword1, false);
+
+          function togglePassword2() {
+            if (passwordInput2.type === 'password') {
+              passwordInput2.type = 'text';
+              icon2.classList.add("fa-eye-slash");
+            } else {
+              passwordInput2.type = 'password';
+              icon2.classList.remove("fa-eye-slash");
+            }
+          }
+          toggle2.addEventListener('click', togglePassword2, false);
+
+
+        </script>
+
+</body>
+
+</html>

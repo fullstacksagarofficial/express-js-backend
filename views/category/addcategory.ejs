@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../layout/links') %>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+</head>
+
+<body>
+  <script>
+    function remove_more(id) {
+      alertify.confirm('One Point ', 'Are you sure want to delete !', function () {
+        $('#box' + id).fadeOut(600, function () {
+          $('#box' + id).remove();
+        });
+      }, function () {
+        alertify.error('Cancel')
+      });
+    }
+  </script>
+  <div class="container-fluid position-relative d-flex p-0">
+    <!-- Sidebar Start -->
+    <%- include('../layout/sidebar') %>
+      <!-- Sidebar End -->
+      <!-- Content Start -->
+      <div class="content">
+        <!-- Navbar Start -->
+        <%- include('../layout/nav') %>
+
+          <!-- Navbar End -->
+
+          <div class="container-fluid pt-4 px-4">
+            <div class="headingbg py-2 px-2 text-white text-uppercase"><i class="fa-solid fa-category-check"></i> Add
+              Category
+            </div>
+            <div class="bg-secondary rounded h-100 pt-4 px-4">
+              <form method="post" action="/addcategory" id="addcategoryfrm">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Category</label>
+                      <input type="text" required class="form-control" id="category" name="category">
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+          </div>
+          <%- include('../layout/footer') %>
+
+            <%- include('../layout/scripts') %>
+              <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+              <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.js"></script>
+              <script>
+                $("#addcategoryfrm").validate({
+
+                });
+              </script>
+
+</body>
+
+</html>
