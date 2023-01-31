@@ -63,5 +63,5 @@ adminsSchema.pre("save", async function (next) {
 
 
 const admin = mongoose.model("admin", adminsSchema);
-admin.createIndexes();
+// admin.createIndexes();
 module.exports = admin;

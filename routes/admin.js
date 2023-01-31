@@ -13,11 +13,9 @@ const nodemailer = require("nodemailer");
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 //dashboard
 router.get("/", auth, async (req, res) => {
-
-  const totalproduct= await Product.find().count();
-  res.render("dashboard", { title: "Dashboard", page_name: "dashboard", adminName:req.cookies.admin, totalproduct:totalproduct });
+  const totalproduct = await Product.find().count();
+  res.render("dashboard", { title: "Dashboard", page_name: "dashboard", adminName: req.cookies.admin, totalproduct: totalproduct });
   // const totalproduct= await Product.count()
-  
 });
 
 router.get("/signup", (req, res) => {
@@ -42,7 +40,7 @@ router.get("/settings", auth, async (req, res) => {
     title: "Setting",
     page_name: "setting",
     admins: req.adminData,
-    adminName:req.cookies.admin
+    adminName: req.cookies.admin
   });
 });
 
@@ -87,7 +85,7 @@ router.post(
   async (req, res, next) => {
     let id = req.adminData._id.toString();
 
-    if (req.body.new_password && req.body.confirm_password && req.body.confirm_password !=='') {
+    if (req.body.new_password && req.body.confirm_password && req.body.confirm_password !== '') {
       if (req.body.new_password != req.body.confirm_password) {
         req.session.message = {
           type: "info",
@@ -103,7 +101,7 @@ router.post(
           oldpassword,
           checkemail.password
         );
-  
+
         if (passwordMatch) {
           const password = await bcrypt.hash(req.body.new_password, 10);
           const admin = Admin.findByIdAndUpdate(
@@ -136,7 +134,7 @@ router.post(
         }
       }
     }
-    else{
+    else {
       req.session.message = {
         type: "info",
         message: "All Fields Are Required !",
@@ -146,21 +144,21 @@ router.post(
   }
 );
 
+
 //create a new admin
 router.post("/addadmin", urlencodedParser, async (req, res) => {
   try {
     const verifyemailToken = crypto.randomBytes(40).toString("hex");
-
     var html = process.env.WEB_PATH + "verify/" + verifyemailToken;
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "developer.sagar10@gmail.com",
-        pass: "fwaqpwudjihuuvcp", //google app password
+        user: process.env.MAIL_EMAIL,
+        pass: process.env.MAIL_PASSWORD, //google app password
       },
     });
     var mailOptions = {
-      from: "developer.sagar10@gmail.com",
+      from: process.env.MAIL_EMAIL,
       to: req.body.email,
       subject: "Verify Email !",
       html: html,
@@ -291,14 +289,14 @@ router.get("/mail", async (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "developer.sagar10@gmail.com",
-      pass: "fwaqpwudjihuuvcp", //google app password
+      user: process.env.MAIL_EMAIL,
+      pass: process.env.MAIL_PASSWORD, //google app password
     },
   });
 
   var mailOptions = {
-    from: "developer.sagar10@gmail.com",
-    to: "dashingsagadewdwefewfwefr10@gmail.com",
+    from: process.env.MAIL_EMAIL,
+    to: "receiveremail@gmail.com",
     subject: "Sending Email using Node.js",
     text: "That was easy!",
   };
